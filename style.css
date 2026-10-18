@@ -6,6 +6,7 @@
   --card-bg: #ffffff;
   --text-color: #333333;
   --light-gray: #e0e0e0;
+  --link-hover: #457b9d;
 }
 
 * {
@@ -182,6 +183,30 @@ body {
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 1rem;
+}
+
+.modal-content h2 {
+  margin-bottom: 0.5rem;
+}
+
+.modal-content p {
+  margin: 1rem 0;
+  color: #444;
+}
+
+.external-link-btn {
+  display: inline-block;
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background-color 0.3s;
+}
+
+.external-link-btn:hover {
+  background-color: var(--link-hover);
 }
 
 .close-btn {
