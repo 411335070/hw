@@ -1,122 +1,226 @@
-// 景點資料庫 (JSON Array 結構)
-const attractions = [
-  {
-    id: 1,
-    name: "東京淺草寺",
-    region: "kanto",
-    regionName: "關東地區",
-    image: "https://images.unsplash.com/photo-1583838423196-857201c107bf?q=80&w=800&auto=format&fit=crop",
-    shortDesc: "東京都內最古老的寺廟，雷門大紅燈籠為代表性地標。",
-    fullDesc: "淺草寺建於公元 628 年，是東京歷史最悠久的寺廟。來到這裡可以參觀標誌性的「雷門」與巨大提燈，沿著仲見世通商店街品嚐各式傳統日本點心與購買紀念品。"
-  },
-  {
-    id: 2,
-    name: "京都伏見稻荷大社",
-    region: "kansai",
-    regionName: "關西地區",
-    image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop",
-    shortDesc: "以綿延不絕的「千本鳥居」聞名世界的神社。",
-    fullDesc: "伏見稻荷大社是全日本稻荷神社的總本社，主要供奉商業繁榮與五穀豐收之神。沿著稻荷山延伸的千本鳥居形成極為壯觀的紅色隧道，吸引無數旅客參訪。"
-  },
-  {
-    id: 3,
-    name: "北海道富良野花田",
-    region: "hokkaido",
-    regionName: "北海道",
-    image: "https://images.unsplash.com/photo-1578637387939-43c525550085?q=80&w=800&auto=format&fit=crop",
-    shortDesc: "夏季盛開的紫色薰衣草花海與彩虹花田。",
-    fullDesc: "富良野以廣闊的花田景緻聞名，每年 7 月中旬至下旬是薰衣草盛開的最佳季節。如彩虹般排列的花海搭配遠處的山脈，是北海道代表性的自然景觀。"
-  },
-  {
-    id: 4,
-    name: "沖繩美麗海水族館",
-    region: "okinawa",
-    regionName: "沖繩",
-    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=800&auto=format&fit=crop",
-    shortDesc: "擁有巨大水槽「黑潮之海」，可近距離觀察鯨鯊。",
-    fullDesc: "位於海洋博公園內的美麗海水族館，最著名的「黑潮之海」水槽容量達 7,500 立方公尺，展示著巨大鯨鯊與鬼蝠魟，帶給遊客身歷其境的大海震撼。"
-  },
-  {
-    id: 5,
-    name: "富士山河口湖",
-    region: "kanto",
-    regionName: "關東地區",
-    image: "https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?q=80&w=800&auto=format&fit=crop",
-    shortDesc: "欣賞富士山倒影（逆富士）的絕佳景觀勝地。",
-    fullDesc: "富士五湖之一的河口湖，交通便利且四季皆有不同美景。春天賞櫻、秋季賞楓，在清晨微風靜止時，還能拍攝到完美的「逆富士」倒影。"
-  }
-];
-
-// DOM 元素選取
-const grid = document.getElementById("attractionsGrid");
-const filterBtns = document.querySelectorAll(".filter-btn");
-const searchInput = document.getElementById("searchInput");
-const modal = document.getElementById("detailModal");
-const modalClose = document.getElementById("modalClose");
-
-let currentRegion = "all";
-let searchKeyword = "";
-
-// 渲染卡片
-function renderCards() {
-  grid.innerHTML = "";
-  
-  const filtered = attractions.filter(item => {
-    const matchesRegion = currentRegion === "all" || item.region === currentRegion;
-    const matchesSearch = item.name.includes(searchKeyword) || item.shortDesc.includes(searchKeyword);
-    return matchesRegion && matchesSearch;
-  });
-
-  if (filtered.length === 0) {
-    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888;">找不到符合條件的景點。</p>`;
-    return;
-  }
-
-  filtered.forEach(item => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <img src="${item.image}" alt="${item.name}">
-      <div class="card-body">
-        <span class="badge">${item.regionName}</span>
-        <h3>${item.name}</h3>
-        <p>${item.shortDesc}</p>
-      </div>
-    `;
-    card.addEventListener("click", () => openModal(item));
-    grid.appendChild(card);
-  });
+/* 全域變數與基礎設定 */
+:root {
+  --primary-color: #e63946;
+  --secondary-color: #1d3557;
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-color: #333333;
+  --light-gray: #e0e0e0;
+  --link-hover: #457b9d;
 }
 
-// 彈窗（Modal）操作
-function openModal(item) {
-  document.getElementById("modalImage").src = item.image;
-  document.getElementById("modalTitle").textContent = item.name;
-  document.getElementById("modalRegion").textContent = item.regionName;
-  document.getElementById("modalDescription").textContent = item.fullDesc;
-  modal.style.display = "flex";
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
 }
 
-modalClose.addEventListener("click", () => modal.style.display = "none");
-window.addEventListener("click", (e) => {
-  if (e.target === modal) modal.style.display = "none";
-});
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
 
-// 地區篩選事件
-filterBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
-    filterBtns.forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    currentRegion = btn.dataset.region;
-    renderCards();
-  });
-});
+/* 導覽列 */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--secondary-color);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
 
-// 即時搜尋事件
-searchInput.addEventListener("input", (e) => {
-  searchKeyword = e.target.value.trim();
-  renderCards();
-});
+.navbar .logo {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
 
-// 初始化載入
-renderCards();
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+
+.navbar a:hover {
+  opacity: 0.8;
+}
+
+/* Hero 區塊 */
+.hero {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+              url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200&auto=format&fit=crop') center/cover;
+  height: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  padding: 0 1rem;
+}
+
+.hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.hero p { font-size: 1.1rem; margin-bottom: 1.5rem; }
+
+.search-box input {
+  width: 100%;
+  max-width: 450px;
+  padding: 0.75rem 1.2rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  outline: none;
+}
+
+/* 容器與過濾按鈕 */
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.filter-group {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--secondary-color);
+  background: white;
+  color: var(--secondary-color);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filter-btn.active, .filter-btn:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+/* 卡片網格 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.8rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 1.2rem;
+}
+
+.badge {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+}
+
+.card h3 { margin-bottom: 0.5rem; }
+.card p { color: #666; font-size: 0.9rem; }
+
+/* 彈窗 Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 550px;
+  width: 90%;
+  position: relative;
+}
+
+.modal-content img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.modal-content h2 {
+  margin-bottom: 0.5rem;
+}
+
+.modal-content p {
+  margin: 1rem 0;
+  color: #444;
+}
+
+.external-link-btn {
+  display: inline-block;
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background-color 0.3s;
+}
+
+.external-link-btn:hover {
+  background-color: var(--link-hover);
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem; right: 1.5rem;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+/* 頁尾 */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: var(--secondary-color);
+  color: white;
+  margin-top: 3rem;
+}
