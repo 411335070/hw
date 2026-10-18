@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japan Travel Guide | 日本景點探索誌</title>
+  <meta name="description" content="精選日本熱門旅遊景點、私房秘境、主題分類與在地交通指引">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            sakura: {
+              50: '#fff5f7',
+              100: '#ffe6ed',
+              500: '#ff4d79',
+              600: '#e62e5c',
+            },
+            japan: {
+              red: '#bc002d',
+              navy: '#0f2537',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300 font-sans min-h-screen flex flex-col">
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 pointer-events-none">
+    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+    <span id="toast-msg" class="text-sm font-medium">已新增至收藏清單</span>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-full bg-japan-red flex items-center justify-center text-white font-bold text-lg shadow-md shadow-red-500/20">
+          日
+        </div>
+        <span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white">
+          Japan<span class="text-sakura-500">Go</span>
+        </span>
+      </a>
+
+      <!-- Desktop Nav Buttons -->
+      <div class="hidden md:flex items-center gap-3">
+        <button id="theme-toggle" class="p-2.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="切換深淺模式">
+          <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+          <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+
+        <button id="fav-open-btn" class="relative flex items-center gap-2 px-4 py-2 rounded-full bg-sakura-50 dark:bg-slate-800 text-sakura-600 dark:text-sakura-500 font-medium hover:bg-sakura-100 dark:hover:bg-slate-700 transition-all">
+          <i data-lucide="heart" class="w-4 h-4 fill-current"></i>
+          <span>我的收藏</span>
+          <span id="fav-badge" class="bg-sakura-500 text-white text-xs px-2 py-0.5 rounded-full font-bold ml-0.5">0</span>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="flex items-center gap-2 md:hidden">
+        <button id="theme-toggle-mobile" class="p-2 rounded-lg text-slate-600 dark:text-slate-300">
+          <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+          <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+        <button id="fav-open-btn-mobile" class="relative p-2 text-sakura-500">
+          <i data-lucide="heart" class="w-6 h-6 fill-current"></i>
+          <span id="fav-badge-mobile" class="absolute top-1 right-1 bg-japan-red text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative bg-slate-900 text-white py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <div class="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
+      <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1920&q=80" alt="Japan background" class="w-full h-full object-cover">
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent z-0"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto text-center space-y-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-sakura-100 text-xs sm:text-sm font-medium border border-white/20">
+        <i data-lucide="sparkles" class="w-4 h-4 text-sakura-500"></i>
+        探索四季之美 · 規劃完美日本行程
+      </div>
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+        發現屬於你的<span class="text-transparent bg-clip-text bg-gradient-to-r from-sakura-500 to-rose-300">日本浪漫之旅</span>
+      </h1>
+      <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto">
+        從繁華的東京街頭到京都的古意神社，精選熱門景點與在地秘境，輕鬆開啟你的日本行。
+      </p>
+
+      <!-- Global Search Bar -->
+      <div class="pt-4 max-w-2xl mx-auto">
+        <div class="relative flex items-center">
+          <i data-lucide="search" class="absolute left-4 w-5 h-5 text-slate-400"></i>
+          <input type="text" id="search-input" placeholder="搜尋景點名稱、城市或關鍵字 (例如：富士山、清水寺)..." class="w-full pl-12 pr-10 py-3.5 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sakura-500 shadow-xl transition-all text-sm sm:text-base">
+          <button id="clear-search" class="absolute right-3 p-1 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hidden">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Area -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
+    
+    <!-- Filter Controls -->
+    <div class="space-y-6 mb-8">
+      <!-- Region Chips -->
+      <div>
+        <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">地區探索 (Region)</h3>
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar" id="region-filters">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Category Chips -->
+      <div>
+        <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">主題分類 (Category)</h3>
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar" id="category-filters">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Filters & Result Count Bar -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 mb-6 border-b border-slate-200 dark:border-slate-800 gap-2">
+      <div class="text-sm text-slate-500 dark:text-slate-400">
+        共找到 <span id="spot-count" class="font-bold text-sakura-600 dark:text-sakura-500">0</span> 個景點
+      </div>
+      <button id="reset-filters-btn" class="text-xs text-slate-500 hover:text-sakura-500 flex items-center gap-1 transition-colors hidden">
+        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+        重設所有篩選
+      </button>
+    </div>
+
+    <!-- Spot Grid -->
+    <div id="spot-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      <!-- Spot Cards rendered via JS -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden text-center py-16 space-y-4">
+      <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto text-slate-400">
+        <i data-lucide="map-pin-off" class="w-8 h-8"></i>
+      </div>
+      <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">未找到符合條件的景點</h3>
+      <p class="text-slate-500 dark:text-slate-400 text-sm max-w-sm mx-auto">請嘗試調整搜尋關鍵字或清除地區/分類篩選條件。</p>
+      <button onclick="resetFilters()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sakura-500 text-white text-sm font-medium hover:bg-sakura-600 transition-colors">
+        重設篩選
+      </button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-8 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
+      <div class="flex justify-center items-center gap-2 text-slate-900 dark:text-white font-bold text-lg">
+        <div class="w-6 h-6 rounded-full bg-japan-red text-white flex items-center justify-center text-xs">日</div>
+        JapanGo 景點誌
+      </div>
+      <p class="text-xs text-slate-500 dark:text-slate-400">
+        © 2026 JapanGo. Designed for GitHub Pages. 圖片與資料來源於開放網路。
+      </p>
+    </div>
+  </footer>
+
+  <!-- Detail Modal -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="modal-card" class="bg-white dark:bg-slate-900 w-full max-w-2xl max-h-[90vh] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 transform scale-95 transition-transform duration-300 flex flex-col">
+      <!-- Modal Header Image -->
+      <div class="relative h-64 sm:h-80 w-full flex-shrink-0">
+        <img id="modal-img" src="" alt="" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+        <button id="modal-close-btn" class="absolute top-4 right-4 p-2 rounded-full bg-slate-900/60 text-white hover:bg-slate-900 transition-colors backdrop-blur-md">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <div class="absolute bottom-4 left-6 right-6 text-white space-y-1">
+          <div class="flex items-center justify-between">
+            <span id="modal-region" class="px-2.5 py-0.5 rounded-md bg-sakura-500 text-xs font-semibold uppercase tracking-wider"></span>
+            <div class="flex items-center gap-1 text-amber-400 font-bold text-sm bg-slate-900/60 backdrop-blur-md px-2.5 py-1 rounded-full">
+              <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+              <span id="modal-rating"></span>
+            </div>
+          </div>
+          <h2 id="modal-title" class="text-2xl sm:text-3xl font-extrabold"></h2>
+          <p id="modal-jpname" class="text-slate-300 text-sm font-medium"></p>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto space-y-6 flex-grow">
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-2" id="modal-tags"></div>
+
+        <!-- Description -->
+        <div>
+          <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">景點簡介</h4>
+          <p id="modal-desc" class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed"></p>
+        </div>
+
+        <!-- Info Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 text-xs sm:text-sm">
+          <div class="flex items-start gap-2.5">
+            <i data-lucide="clock" class="w-4 h-4 text-sakura-500 mt-0.5 flex-shrink-0"></i>
+            <div>
+              <span class="block font-semibold text-slate-700 dark:text-slate-200">建議開放/開放時間</span>
+              <span id="modal-hours" class="text-slate-500 dark:text-slate-400"></span>
+            </div>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <i data-lucide="sun-medium" class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0"></i>
+            <div>
+              <span class="block font-semibold text-slate-700 dark:text-slate-200">最佳造訪季節</span>
+              <span id="modal-season" class="text-slate-500 dark:text-slate-400"></span>
+            </div>
+          </div>
+          <div class="flex items-start gap-2.5 sm:col-span-2">
+            <i data-lucide="bus" class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0"></i>
+            <div>
+              <span class="block font-semibold text-slate-700 dark:text-slate-200">交通指引</span>
+              <span id="modal-access" class="text-slate-500 dark:text-slate-400"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-50 dark:bg-slate-800/80 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+        <button id="modal-fav-btn" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm">
+          <i data-lucide="heart" class="w-4 h-4"></i>
+          <span id="modal-fav-text">加入收藏</span>
+        </button>
+        <a id="modal-map-link" href="#" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-sakura-500 hover:bg-sakura-600 text-white font-semibold shadow-md transition-colors text-sm">
+          <i data-lucide="map-pin" class="w-4 h-4"></i>
+          <span>Google 地圖</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Favorites Drawer -->
+  <div id="drawer-backdrop" class="fixed inset-0 bg-slate-950/50 backdrop-blur-xs z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white dark:bg-slate-900 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col border-l border-slate-200 dark:border-slate-800">
+      <div class="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="heart" class="w-5 h-5 text-sakura-500 fill-current"></i>
+          <h2 class="font-bold text-lg text-slate-900 dark:text-white">我的景點收藏</h2>
+        </div>
+        <button id="drawer-close-btn" class="p-2 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Drawer Content -->
+      <div id="drawer-list" class="flex-grow overflow-y-auto p-4 sm:p-6 space-y-4">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Drawer Footer -->
+      <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+        <button id="clear-favs-btn" class="w-full py-2.5 rounded-xl text-xs text-rose-500 border border-rose-200 dark:border-rose-900/50 hover:bg-rose-50 dark:hover:bg-rose-950/30 font-medium transition-colors">
+          清空所有收藏
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    // Spots Data
+    const spotsData = [
+      {
+        id: "fuji-01",
+        title: "富士山與新倉山淺間公園",
+        jpName: "新倉山浅間公園 (Fujiyoshida)",
+        region: "關東",
+        category: "必訪名勝",
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80",
+        description: "擁有眺望富士山絕景的最佳位置！園內的忠靈塔與遠處壯麗的富士山構成日本經典代表景致，春季更是賞櫻的極致聖地。",
+        hours: "24小時開放",
+        season: "春季(櫻花) / 秋季(楓葉)",
+        access: "富士急行線「下吉田站」徒步約10分鐘即可抵達園區入口",
+        mapQuery: "Arakurayama Sengen Park"
+      },
+      {
+        id: "kyoto-kiyomizu",
+        title: "清水寺",
+        jpName: "清水寺 (Kiyomizu-dera)",
+        region: "關西",
+        category: "歷史古蹟",
+        rating: 4.8,
+        image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80",
+        description: "京都最古老的寺院之一，名列世界文化遺產。著名的「清水舞台」懸空構建於山崖，四季景緻皆令人震撼，尤以秋季夜楓最為人稱道。",
+        hours: "06:00 - 18:00 (依季節延長)",
+        season: "四季皆宜 (特別推薦秋季)",
+        access: "JR京都站搭乘市營巴士至「五條坂」下車徒步10分鐘",
+        mapQuery: "Kiyomizu-dera Kyoto"
+      },
+      {
+        id: "tokyo-sensoji",
+        title: "淺草寺與雷門",
+        jpName: "浅草寺 (Senso-ji)",
+        region: "關東",
+        category: "歷史古蹟",
+        rating: 4.7,
+        image: "https://images.unsplash.com/photo-1583838384210-94e825026049?auto=format&fit=crop&w=800&q=80",
+        description: "東京都內最古老的寺廟，巨大的「雷門」紅燈籠是東京的指標性地標。仲見世通商店街提供各式美食與傳統工藝品。",
+        hours: "06:00 - 17:00 (境內全天可參觀)",
+        season: "全年",
+        access: "東京地下鐵銀座線、都營淺草線「淺草站」徒步5分鐘",
+        mapQuery: "Sensoji Temple Tokyo"
+      },
+      {
+        id: "hokkaido-biei",
+        title: "富良野與美瑛青池",
+        jpName: "白金青い池 (Shirogane Aoiike)",
+        region: "北海道",
+        category: "自然風光",
+        rating: 4.8,
+        image: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=800&q=80",
+        description: "池水富含礦物質，呈現出極具神秘感的夢幻翡翠藍。隨季節與陽光角度變幻不同光澤，與佇立池中的枯木形成奇幻景緻。",
+        hours: "24小時開放 (建議白天前往)",
+        season: "夏季(池水最藍) / 冬季(夜間點燈)",
+        access: "JR美瑛站搭乘道北巴士至「白金青い池」站下車",
+        mapQuery: "Shirogane Aoiike Biei"
+      },
+      {
+        id: "osaka-dotonbori",
+        title: "道頓堀與心齋橋",
+        jpName: "道頓堀 (Dotonbori)",
+        region: "關西",
+        category: "美食購物",
+        rating: 4.6,
+        image: "https://images.unsplash.com/photo-1590559899731-a382839e5549?auto=format&fit=crop&w=800&q=80",
+        description: "大阪最繁華的代表性商圈！巨型跑者跑道招牌、章魚燒、串炸等天下廚房美食集結於此，夜晚霓虹燈火璀璨無比。",
+        hours: "依各店家營業時間而定",
+        season: "全年",
+        access: "大阪地下鐵御堂筋線「難波站」14號出口徒步3分鐘",
+        mapQuery: "Dotonbori Osaka"
+      },
+      {
+        id: "akihabara-01",
+        title: "秋葉原電器街",
+        jpName: "秋葉原 (Akihabara)",
+        region: "關東",
+        category: "動漫聖地",
+        rating: 4.7,
+        image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80",
+        description: "全球動漫文化與電子產品的次文化聖地！公仔模型、女僕咖啡廳、電玩大樓林立，是御宅族與流行文化愛好者天堂。",
+        hours: "10:00 - 21:00 (依店家不同)",
+        season: "全年",
+        access: "JR山手線 / 總武線「秋葉原站」出站即達",
+        mapQuery: "Akihabara Tokyo"
+      },
+      {
+        id: "nara-park",
+        title: "奈良公園與東大寺",
+        jpName: "奈良公園 (Nara Park)",
+        region: "關西",
+        category: "自然風光",
+        rating: 4.8,
+        image: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80",
+        description: "以近距離互動的親人野生梅花鹿聞名！公園鄰近宏偉的木造大佛殿「東大寺」，自然與歷史文化和諧交融。",
+        hours: "24小時開放 (東大寺 07:30 - 17:30)",
+        season: "春季 / 秋季",
+        access: "近鐵「奈良站」徒步約10分鐘",
+        mapQuery: "Nara Park"
+      },
+      {
+        id: "okinawa-churaumi",
+        title: "美麗海水族館",
+        jpName: "沖縄美ら海水族館",
+        region: "沖繩",
+        category: "必訪名勝",
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80",
+        description: "擁有巨大的「黑潮之海」水槽，能近距離欣賞巨大鯨鯊與鬼蝠魟優雅游動，是亞洲最震撼的水族館之一。",
+        hours: "08:30 - 18:30",
+        season: "全年",
+        access: "那霸機場搭乘高速巴士至「紀念公園前」站下車",
+        mapQuery: "Okinawa Churaumi Aquarium"
+      }
+    ];
+
+    const regions = ["全部地區", "關東", "關西", "北海道", "沖繩"];
+    const categories = ["全部主題", "必訪名勝", "歷史古蹟", "自然風光", "美食購物", "動漫聖地"];
+
+    // App State
+    let currentRegion = "全部地區";
+    let currentCategory = "全部主題";
+    let searchQuery = "";
+    let favorites = JSON.parse(localStorage.getItem('jp_favs') || '[]');
+
+    // DOM Elements
+    const spotGrid = document.getElementById('spot-grid');
+    const emptyState = document.getElementById('empty-state');
+    const spotCount = document.getElementById('spot-count');
+    const searchInput = document.getElementById('search-input');
+    const clearSearchBtn = document.getElementById('clear-search');
+    const resetFiltersBtn = document.getElementById('reset-filters-btn');
+
+    // Filter Elements
+    const regionFiltersContainer = document.getElementById('region-filters');
+    const categoryFiltersContainer = document.getElementById('category-filters');
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      initTheme();
+      renderFilterChips();
+      renderSpots();
+      updateFavBadges();
+
+      // Search Event
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        clearSearchBtn.classList.toggle('hidden', !searchQuery);
+        renderSpots();
+      });
+
+      clearSearchBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchQuery = '';
+        clearSearchBtn.classList.add('hidden');
+        renderSpots();
+      });
+
+      resetFiltersBtn.addEventListener('click', resetFilters);
+
+      // Theme Toggles
+      document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+      document.getElementById('theme-toggle-mobile').addEventListener('click', toggleTheme);
+
+      // Favorites Drawer Events
+      document.getElementById('fav-open-btn').addEventListener('click', openDrawer);
+      document.getElementById('fav-open-btn-mobile').addEventListener('click', openDrawer);
+      document.getElementById('drawer-close-btn').addEventListener('click', closeDrawer);
+      document.getElementById('drawer-backdrop').addEventListener('click', (e) => {
+        if(e.target.id === 'drawer-backdrop') closeDrawer();
+      });
+      document.getElementById('clear-favs-btn').addEventListener('click', clearFavorites);
+
+      // Modal Events
+      document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+      document.getElementById('modal-backdrop').addEventListener('click', (e) => {
+        if(e.target.id === 'modal-backdrop') closeModal();
+      });
+    });
+
+    // Theme Logic
+    function initTheme() {
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.theme = isDark ? 'dark' : 'light';
+    }
+
+    // Render Filter Chips
+    function renderFilterChips() {
+      regionFiltersContainer.innerHTML = regions.map(r => `
+        <button onclick="setRegion('${r}')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${currentRegion === r ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 shadow-md' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'}">
+          ${r}
+        </button>
+      `).join('');
+
+      categoryFiltersContainer.innerHTML = categories.map(c => `
+        <button onclick="setCategory('${c}')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${currentCategory === c ? 'bg-sakura-500 text-white shadow-md shadow-sakura-500/20' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'}">
+          ${c}
+        </button>
+      `).join('');
+    }
+
+    function setRegion(r) {
+      currentRegion = r;
+      renderFilterChips();
+      renderSpots();
+    }
+
+    function setCategory(c) {
+      currentCategory = c;
+      renderFilterChips();
+      renderSpots();
+    }
+
+    function resetFilters() {
+      currentRegion = "全部地區";
+      currentCategory = "全部主題";
+      searchQuery = "";
+      searchInput.value = "";
+      clearSearchBtn.classList.add('hidden');
+      renderFilterChips();
+      renderSpots();
+    }
+
+    // Filter Logic
+    function getFilteredSpots() {
+      return spotsData.filter(spot => {
+        const matchesRegion = currentRegion === "全部地區" || spot.region === currentRegion;
+        const matchesCategory = currentCategory === "全部主題" || spot.category === currentCategory;
+        const matchesSearch = !searchQuery || 
+          spot.title.toLowerCase().includes(searchQuery) ||
+          spot.jpName.toLowerCase().includes(searchQuery) ||
+          spot.description.toLowerCase().includes(searchQuery);
+        return matchesRegion && matchesCategory && matchesSearch;
+      });
+    }
+
+    // Render Spot Cards
+    function renderSpots() {
+      const filtered = getFilteredSpots();
+      spotCount.textContent = filtered.length;
+
+      const isFiltered = currentRegion !== "全部地區" || currentCategory !== "全部主題" || searchQuery !== "";
+      resetFiltersBtn.classList.toggle('hidden', !isFiltered);
+
+      if (filtered.length === 0) {
+        spotGrid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      spotGrid.innerHTML = filtered.map(spot => {
+        const isFav = favorites.includes(spot.id);
+        return `
+          <div class="group bg-white dark:bg-slate-800/80 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer" onclick="openModal('${spot.id}')">
+            <!-- Card Image Container -->
+            <div class="relative h-48 sm:h-52 overflow-hidden">
+              <img src="${spot.image}" alt="${spot.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
+              
+              <span class="absolute top-3 left-3 bg-slate-900/60 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                ${spot.region}
+              </span>
+
+              <button onclick="toggleFav(event, '${spot.id}')" class="absolute top-3 right-3 p-2 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md text-slate-600 dark:text-slate-300 hover:scale-110 transition-transform ${isFav ? 'text-sakura-500 fill-current' : ''}">
+                <i data-lucide="heart" class="w-4 h-4 ${isFav ? 'fill-sakura-500 text-sakura-500' : ''}"></i>
+              </button>
+
+              <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+                <span class="text-xs bg-sakura-500 px-2 py-0.5 rounded font-medium">${spot.category}</span>
+                <div class="flex items-center gap-1 text-xs font-bold text-amber-300">
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                  <span>${spot.rating}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Content -->
+            <div class="p-5 flex-grow flex flex-col justify-between space-y-3">
+              <div>
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white group-hover:text-sakura-500 transition-colors line-clamp-1">
+                  ${spot.title}
+                </h3>
+                <p class="text-xs text-slate-400 font-medium mb-2">${spot.jpName}</p>
+                <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm line-clamp-2 leading-relaxed">
+                  ${spot.description}
+                </p>
+              </div>
+
+              <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                <span class="flex items-center gap-1">
+                  <i data-lucide="map-pin" class="w-3.5 h-3.5 text-sakura-500"></i>
+                  ${spot.region}
+                </span>
+                <span class="font-medium text-sakura-500 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  查看詳情
+                  <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // Modal Logic
+    let activeModalSpotId = null;
+
+    function openModal(spotId) {
+      const spot = spotsData.find(s => s.id === spotId);
+      if (!spot) return;
+
+      activeModalSpotId = spotId;
+
+      document.getElementById('modal-img').src = spot.image;
+      document.getElementById('modal-region').textContent = spot.region;
+      document.getElementById('modal-rating').textContent = spot.rating;
+      document.getElementById('modal-title').textContent = spot.title;
+      document.getElementById('modal-jpname').textContent = spot.jpName;
+      document.getElementById('modal-desc').textContent = spot.description;
+      document.getElementById('modal-hours').textContent = spot.hours;
+      document.getElementById('modal-season').textContent = spot.season;
+      document.getElementById('modal-access').textContent = spot.access;
+      document.getElementById('modal-map-link').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.mapQuery)}`;
+
+      document.getElementById('modal-tags').innerHTML = `
+        <span class="px-2.5 py-1 rounded-lg bg-sakura-50 dark:bg-slate-800 text-sakura-600 dark:text-sakura-400 text-xs font-semibold"># ${spot.category}</span>
+        <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold"># ${spot.region}</span>
+      `;
+
+      updateModalFavBtn();
+
+      const backdrop = document.getElementById('modal-backdrop');
+      const card = document.getElementById('modal-card');
+
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      card.classList.remove('scale-95');
+      card.classList.add('scale-100');
+
+      document.body.style.overflow = 'hidden';
+
+      // Fav button click inside modal
+      document.getElementById('modal-fav-btn').onclick = (e) => {
+        toggleFav(e, spotId);
+        updateModalFavBtn();
+      };
+    }
+
+    function closeModal() {
+      const backdrop = document.getElementById('modal-backdrop');
+      const card = document.getElementById('modal-card');
+
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      card.classList.remove('scale-100');
+      card.classList.add('scale-95');
+
+      document.body.style.overflow = '';
+      activeModalSpotId = null;
+    }
+
+    function updateModalFavBtn() {
+      if (!activeModalSpotId) return;
+      const isFav = favorites.includes(activeModalSpotId);
+      const textSpan = document.getElementById('modal-fav-text');
+      const btn = document.getElementById('modal-fav-btn');
+
+      if (isFav) {
+        textSpan.textContent = "已收藏景點";
+        btn.classList.add('border-sakura-500', 'text-sakura-500', 'bg-sakura-50', 'dark:bg-slate-800');
+      } else {
+        textSpan.textContent = "加入收藏";
+        btn.classList.remove('border-sakura-500', 'text-sakura-500', 'bg-sakura-50', 'dark:bg-slate-800');
+      }
+    }
+
+    // Favorites Logic
+    function toggleFav(event, spotId) {
+      if(event) event.stopPropagation();
+
+      const index = favorites.indexOf(spotId);
+      let isAdded = false;
+
+      if (index > -1) {
+        favorites.splice(index, 1);
+      } else {
+        favorites.push(spotId);
+        isAdded = true;
+      }
+
+      localStorage.setItem('jp_favs', JSON.stringify(favorites));
+      updateFavBadges();
+      renderSpots();
+      if(document.getElementById('drawer-backdrop').classList.contains('opacity-100')) {
+        renderDrawerList();
+      }
+
+      showToast(isAdded ? "已新增至我的收藏！" : "已從收藏中移除");
+    }
+
+    function clearFavorites() {
+      if (favorites.length === 0) return;
+      if (confirm('確定要清空所有收藏的景點嗎？')) {
+        favorites = [];
+        localStorage.setItem('jp_favs', JSON.stringify(favorites));
+        updateFavBadges();
+        renderSpots();
+        renderDrawerList();
+        showToast("已清空所有收藏");
+      }
+    }
+
+    function updateFavBadges() {
+      const count = favorites.length;
+      document.getElementById('fav-badge').textContent = count;
+      document.getElementById('fav-badge-mobile').textContent = count;
+    }
+
+    // Drawer Logic
+    function openDrawer() {
+      renderDrawerList();
+      const backdrop = document.getElementById('drawer-backdrop');
+      const drawer = document.getElementById('drawer');
+
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      backdrop.classList.add('opacity-100');
+      drawer.classList.remove('translate-x-full');
+
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      const backdrop = document.getElementById('drawer-backdrop');
+      const drawer = document.getElementById('drawer');
+
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      backdrop.classList.remove('opacity-100');
+      drawer.classList.add('translate-x-full');
+
+      document.body.style.overflow = '';
+    }
+
+    function renderDrawerList() {
+      const listContainer = document.getElementById('drawer-list');
+      const favSpots = spotsData.filter(s => favorites.includes(s.id));
+
+      if (favSpots.length === 0) {
+        listContainer.innerHTML = `
+          <div class="text-center py-12 space-y-3">
+            <div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto text-slate-400">
+              <i data-lucide="heart-off" class="w-6 h-6"></i>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">目前尚無收藏景點</p>
+            <p class="text-xs text-slate-400">點擊景點卡片上的愛心按鈕即可收藏！</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      listContainer.innerHTML = favSpots.map(spot => `
+        <div class="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl border border-slate-200/60 dark:border-slate-800 group">
+          <img src="${spot.image}" alt="${spot.title}" class="w-16 h-16 rounded-xl object-cover flex-shrink-0">
+          <div class="flex-grow min-w-0">
+            <h4 class="font-bold text-sm text-slate-900 dark:text-white truncate">${spot.title}</h4>
+            <p class="text-xs text-slate-400 truncate mb-1">${spot.jpName}</p>
+            <span class="text-[10px] bg-sakura-100 dark:bg-sakura-950 text-sakura-600 dark:text-sakura-400 px-2 py-0.5 rounded-md font-medium">${spot.region}</span>
+          </div>
+          <button onclick="toggleFav(event, '${spot.id}')" class="p-2 text-slate-400 hover:text-rose-500 transition-colors">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    // Toast Notification
+    let toastTimeout;
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+
+      toastMsg.textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
