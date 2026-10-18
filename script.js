@@ -75,7 +75,7 @@ const attractions = [
     name: "北海道小樽運河",
     region: "hokkaido",
     regionName: "北海道",
-    image: "https://images.unsplash.com/photo-1531816458010-fb7685eecbcb?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1608661079861-4603099dd443?q=80&w=800&auto=format&fit=crop",
     shortDesc: "充滿復古懷舊情調的運河，兩旁散布著磚造倉庫群。",
     fullDesc: "小樽運河開鑿於 1923 年，曾是北海道重要的物流樞紐。如今沿岸的煤氣路燈與磚造倉庫改建為餐廳與工藝館，傍晚點燈後呈現極為浪漫異國風情景致。",
     url: "https://otaru.gr.jp/"
@@ -85,7 +85,7 @@ const attractions = [
     name: "廣島嚴島神社（海上鳥居）",
     region: "other",
     regionName: "其他地區（中國地方）",
-    image: "https://images.unsplash.com/photo-1528164344705-47542687990d?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=800&auto=format&fit=crop",
     shortDesc: "世界文化遺產，聳立於海面上的壯觀朱紅色大鳥居。",
     fullDesc: "位於廣島縣宮島的嚴島神社擁有超過千年歷史。最具代表性的木造大鳥居立於海灘上，漲潮時宛如飄浮於大海之中，退潮時則可步行至鳥居下方近距離欣賞。",
     url: "https://www.itsukushimajinja.jp/"
@@ -105,7 +105,7 @@ const attractions = [
     name: "名古屋城",
     region: "other",
     regionName: "其他地區（中部地區）",
-    image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1618330834871-dd22c2c226ca?q=80&w=800&auto=format&fit=crop",
     shortDesc: "屋頂上飾有金碧輝煌的「金鯱」，為德川家康所建名城。",
     fullDesc: "名古屋城由德川家康於 1612 年下令修建，天守閣屋頂兩端的金鯱為其最具代表性的標誌。近年重建完成的「本丸御殿」極具工藝美感，展示了繁複精美的金箔壁畫。",
     url: "https://www.nagoyacastle.jp/"
@@ -115,7 +115,7 @@ const attractions = [
     name: "福岡太宰府天滿宮",
     region: "other",
     regionName: "其他地區（九州）",
-    image: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1624253321171-1be53e12f5f4?q=80&w=800&auto=format&fit=crop",
     shortDesc: "祈求學業進步的信仰中心，參道上的梅枝餅極具特色。",
     fullDesc: "太宰府天滿宮供奉學問之神菅原道真，全日本考生常遠道而來祈求考運昌隆。境內種植有數千株梅花，參道上更有著名建築師隈研吾設計的星巴克與現烤名產「梅枝餅」。",
     url: "https://www.dazaifutenmangu.or.jp/"
