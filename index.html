@@ -39,6 +39,7 @@
       <button class="filter-btn" data-region="kansai">關西地區</button>
       <button class="filter-btn" data-region="hokkaido">北海道</button>
       <button class="filter-btn" data-region="okinawa">沖繩</button>
+      <button class="filter-btn" data-region="other">其他地區</button>
     </div>
 
     <!-- 景點卡片容器 (由 JS 動態生成) -->
@@ -51,8 +52,10 @@
       <span class="close-btn" id="modalClose">&times;</span>
       <img id="modalImage" src="" alt="">
       <h2 id="modalTitle"></h2>
-      <p id="modalRegion" class="badge"></p>
+      <span id="modalRegion" class="badge"></span>
       <p id="modalDescription"></p>
+      <!-- 新增：外部連結按鈕 -->
+      <a id="modalLink" class="external-link-btn" href="#" target="_blank" rel="noopener noreferrer">前往官方/詳細介紹網站 ↗</a>
     </div>
   </div>
 
