@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>探索日本｜各地熱門景點導覽</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 導覽列 -->
+  <header class="navbar">
+    <div class="logo">🇯🇵 探索日本 Explore Japan</div>
+    <nav>
+      <ul>
+        <li><a href="#hero">首頁</a></li>
+        <li><a href="#gallery">熱門景點</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero 主視覺與搜尋欄 -->
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h1>發現日本之美</h1>
+      <p>從北海道的雪景到沖繩的美麗海灘，探索最受歡迎的日本景點</p>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="輸入關鍵字（例如：京都、神社、東京）...">
+      </div>
+    </div>
+  </section>
+
+  <!-- 景點展示區 -->
+  <main id="gallery" class="container">
+    <!-- 地區篩選按鈕 -->
+    <div class="filter-group">
+      <button class="filter-btn active" data-region="all">全部地區</button>
+      <button class="filter-btn" data-region="kanto">關東地區</button>
+      <button class="filter-btn" data-region="kansai">關西地區</button>
+      <button class="filter-btn" data-region="hokkaido">北海道</button>
+      <button class="filter-btn" data-region="okinawa">沖繩</button>
+    </div>
+
+    <!-- 景點卡片容器 (由 JS 動態生成) -->
+    <div class="grid" id="attractionsGrid"></div>
+  </main>
+
+  <!-- 景點詳情彈窗 (Modal) -->
+  <div id="detailModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="modalClose">&times;</span>
+      <img id="modalImage" src="" alt="">
+      <h2 id="modalTitle"></h2>
+      <p id="modalRegion" class="badge"></p>
+      <p id="modalDescription"></p>
+    </div>
+  </div>
+
+  <!-- 頁尾 -->
+  <footer>
+    <p>&copy; 2026 探索日本 Japan Travel Guide. Hosted on GitHub Pages.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
